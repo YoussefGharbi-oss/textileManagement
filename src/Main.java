@@ -1,5 +1,41 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+
+interface authentification {
+    boolean verifyPersonalId (String empId , String[] Idlist) ;
+    boolean verifyName(String name , String[] nameList) ;
+
+}
+class GlobalAuthentification implements authentification{
+
+
+
+    @Override
+    public boolean verifyPersonalId(String empId, String[] Idlist) {
+        for(String id : Idlist){
+            if (id.equals(empId)) {
+                return true ;
+            }
+        }
+        return false ;
+
+
+    }
+
+    @Override
+    public boolean verifyName(String name , String[] nameList) {
+        for(String name1 : nameList){
+            if (name1.equals(name)) {
+                return true ;
+            }
+        }
+        return false ;
+
+
+
+
+    }
+}
 class Product {
     private int qte ;
     private String name ;
@@ -24,7 +60,10 @@ class Product {
 
     }
     public String getId(){return this.Id ; }
+    public String getName(){return this.name ; }
     public boolean isExist(String productId , ArrayList<Product> productList){
+        //Looping a list of product
+
         for(Product product : productList){
             if (product.getId().equals(productId)) {
                 return true ;
@@ -68,6 +107,20 @@ class Personnel extends Product{
 
 
     }
+
+    public String getId() {
+        return empId;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public String getService() {
+        return service;
+    }
+
     public void displayDetail(){
         System.out.println("Name : " + this.name);
         System.out.println("Employee ID : " + this.empId);
@@ -91,10 +144,39 @@ class Personnel extends Product{
     }
 
 
+
+}
+class Engineer extends  Personnel{
+     private String Password ;
+    @Override
+    public void setDetails() {
+        super.setDetails();
+        Scanner input = new Scanner(System.in) ;
+        System.out.println("Enter your Password ");
+        String password =  input.next() ;
+
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+    public String getService(){
+        return super.getService() ;
+
+     }
+     //TODO Create a Crud System for product (by engineer)
+    //Update Product List using id index and (requires Search for Product )
+    //Delete Specific Product From Table
+    //Add Product
 }
 public class Main {
     public static void main(String[] args) {
-        int i = 0 ;
+        /*int i = 0 ;
 
         ArrayList<Product> productList = new ArrayList<>();
         while (true) {
@@ -117,10 +199,25 @@ public class Main {
 
 
         }
+        */
+
         Personnel employee = new Personnel() ;
         employee.setDetails();
 
-        employee.checkProduct(productList);
+        GlobalAuthentification Auth = new GlobalAuthentification() ;
+        String[] Idlist = {"0000000" , "0000001" , "0000002" , "0000003" , "0000004" , "0000005" , "0000006" , "0000007" , "0000008" , "0000009" } ;
+        String[] nameList = {"John" , "Doe" , "Jane" , "Doe" , "Jack" , "Doe" , "Jill" , "Doe" , "James" , "Doe" } ;
+
+        //Test instance for authentification for personal
+
+        boolean verifyId = Auth.verifyPersonalId(employee.getId() , Idlist) ;
+        boolean verifyName = Auth.verifyName(employee.getName(), nameList) ;
+
+
+
+
+
+
 
 
 
