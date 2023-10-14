@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 interface authentification {
@@ -35,6 +37,32 @@ class GlobalAuthentification implements authentification{
 
 
     }
+}
+class EngineerAuth implements authentification{
+
+    @Override
+    public boolean verifyPersonalId(String empId, String[] Idlist) {
+        return false;
+    }
+
+    @Override
+    public boolean verifyName(String name, String[] nameList) {
+        return false;
+    }
+    public boolean verifyEngineer( String name , String password, HashMap<String,String> map ){
+        for(Map.Entry<String , String> entry : map.entrySet()){
+            String key = entry.getKey() ;
+            String  value = entry.getValue() ;
+            if((name == key ) && ( password == value)) {
+                return true ;
+            }
+
+
+
+        }
+        return false ;
+    }
+
 }
 class Product {
     private int qte ;
@@ -170,13 +198,28 @@ class Engineer extends  Personnel{
 
      }
      //TODO Create a Crud System for product (by engineer)
-    //Update Product List using id index and (requires Search for Product )
+     //Update Product List using id index and (requires Search for Product )
+    public void updateProduct(String product , Product newProduct , ArrayList<Product> productList){
+        for (Product item : productList){
+            if (item.getName() == product) {
+                item = newProduct ;
+                break ;
+            }
+
+        }
+
+
+
+
+
+    }
     //Delete Specific Product From Table
+
     //Add Product
 }
 public class Main {
     public static void main(String[] args) {
-        /*int i = 0 ;
+    /*    int i = 0 ;
 
         ArrayList<Product> productList = new ArrayList<>();
         while (true) {
@@ -199,10 +242,9 @@ public class Main {
 
 
         }
-        */
 
+*/
         Personnel employee = new Personnel() ;
-        employee.setDetails();
 
         GlobalAuthentification Auth = new GlobalAuthentification() ;
         String[] Idlist = {"0000000" , "0000001" , "0000002" , "0000003" , "0000004" , "0000005" , "0000006" , "0000007" , "0000008" , "0000009" } ;
@@ -210,8 +252,15 @@ public class Main {
 
         //Test instance for authentification for personal
 
-        boolean verifyId = Auth.verifyPersonalId(employee.getId() , Idlist) ;
-        boolean verifyName = Auth.verifyName(employee.getName(), nameList) ;
+
+        HashMap<String , String > EngineerMap = new HashMap<>() ;
+        EngineerMap.put("Ahmed" , "Azerty") ;
+        EngineerMap.put("Youssef" , "4et2sq02ah") ;
+
+        EngineerAuth AuthEng = new EngineerAuth() ;
+        boolean result = AuthEng.verifyEngineer("Youssef" , "4et2sq02ah" , EngineerMap);
+        System.out.println(result);
+
 
 
 
